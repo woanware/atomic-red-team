@@ -1,15 +1,16 @@
 package goutil
 
 import (
-	"strings"
-	"fmt"
 	"crypto/md5"
 	"encoding/hex"
+	"fmt"
 	"io"
+	"strings"
 )
 
 // Emulates the python partition function
 func Partition(data string, separator string) (pre string, post string) {
+
 	index := strings.Index(data, separator)
 	if index == -1 {
 		return "", ""
@@ -20,6 +21,7 @@ func Partition(data string, separator string) (pre string, post string) {
 
 //
 func GetSeparator(s string) rune {
+
 	var sep string
 	s = `"` + s + `"`
 	fmt.Sscanf(s, "%q", &sep)
@@ -29,6 +31,7 @@ func GetSeparator(s string) rune {
 
 // Removes the leading/trailing quotes
 func RemoveQuotes(data string) string {
+
 	data = strings.TrimSpace(data)
 	if len(data) == 0 {
 		return ""
@@ -39,7 +42,7 @@ func RemoveQuotes(data string) string {
 	}
 
 	if data[:1] == "\"" {
-		data = data[1:len(data) - 1]
+		data = data[1 : len(data)-1]
 	}
 
 	if data[len(data)-1:] == "\"" {
@@ -50,7 +53,8 @@ func RemoveQuotes(data string) string {
 }
 
 // MD5 hashes a string
-func Md5HashString (data string) string {
+func Md5HashString(data string) string {
+
 	hasher := md5.New()
 	io.WriteString(hasher, data)
 	return hex.EncodeToString(hasher.Sum(nil))

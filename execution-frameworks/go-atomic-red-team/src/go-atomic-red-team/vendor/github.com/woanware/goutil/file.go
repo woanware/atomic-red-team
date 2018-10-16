@@ -1,21 +1,21 @@
 package goutil
 
 import (
-	"bufio"
-	"path/filepath"
-	"os"
-	"archive/zip"
 	"archive/tar"
+	"archive/zip"
+	"bufio"
 	"compress/gzip"
+	"crypto/md5"
+	"fmt"
 	"io"
 	"io/ioutil"
-	"fmt"
-	"errors"
-	"crypto/md5"
+	"os"
+	"path/filepath"
 )
 
 //
 func Unzip(src, dest string) error {
+
 	r, err := zip.OpenReader(src)
 	if err != nil {
 		return err
@@ -81,6 +81,7 @@ func Unzip(src, dest string) error {
 
 //
 func UnzipFile(src, dest, fileName string) error {
+
 	zipReader, err := zip.OpenReader(src)
 	if err != nil {
 		return err
@@ -118,6 +119,7 @@ func UnzipFile(src, dest, fileName string) error {
 
 //
 func Ungunzip(src, dest string) error {
+
 	gzipfile, err := os.Open(src)
 	if err != nil {
 		return err
@@ -145,6 +147,7 @@ func Ungunzip(src, dest string) error {
 
 //
 func UnTarGunzipFile(src, dest, fileName string) error {
+
 	f, err := os.Open(src)
 	if err != nil {
 		return err
@@ -199,9 +202,10 @@ func UnTarGunzipFile(src, dest, fileName string) error {
 
 //
 func Md5File(filePath string) (string, error) {
+
 	f, err := os.Open(filePath)
 	if err != nil {
-		return "", errors.New(fmt.Sprintf("Error opening file for MD5 computation: %v (%s)", err, filePath))
+		return "", fmt.Errorf(fmt.Sprintf("Error opening file for MD5 computation: %v (%s)", err, filePath))
 	}
 
 	hasher := md5.New()
@@ -211,10 +215,11 @@ func Md5File(filePath string) (string, error) {
 }
 
 // Ensure that the user supplied path exists as a file
-func DoesFileExist(path string) (bool) {
-	file_info, err := os.Stat(path)
+func DoesFileExist(path string) bool {
+
+	fi, err := os.Stat(path)
 	if err == nil {
-		if file_info.IsDir() == true {
+		if fi.IsDir() == true {
 			fmt.Println("The item is not a file")
 			return false
 		}
@@ -222,27 +227,33 @@ func DoesFileExist(path string) (bool) {
 		return true
 	}
 
-	if os.IsNotExist(err) { return false}
+	if os.IsNotExist(err) {
+		return false
+	}
 	return false
 }
 
 // Ensure that the user supplied path exists as a file
-func DoesDirExist(path string) (bool) {
-	file_info, err := os.Stat(path)
+func DoesDirExist(path string) bool {
+
+	fi, err := os.Stat(path)
 	if err == nil {
-		if file_info.IsDir() == true {
+		if fi.IsDir() == true {
 			return true
 		} else {
 			return false
 		}
 	}
 
-	if os.IsNotExist(err) { return false}
+	if os.IsNotExist(err) {
+		return false
+	}
 	return false
 }
 
 // Reads all of the text from a file
 func ReadTextFromFile(path string) (string, error) {
+
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
 		return "", err
@@ -252,6 +263,7 @@ func ReadTextFromFile(path string) (string, error) {
 
 //
 func ReadTextLinesFromFile(path string) ([]string, error) {
+
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, err
@@ -269,6 +281,7 @@ func ReadTextLinesFromFile(path string) ([]string, error) {
 
 //
 func WriteTextToFile(filePath string, data string, append bool) error {
+
 	var f *os.File
 	var err error
 	if append == true {
@@ -281,7 +294,7 @@ func WriteTextToFile(filePath string, data string, append bool) error {
 		}
 
 		// open files r and w
-		f, err = os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY,0600)
+		f, err = os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY, 0600)
 		if err != nil {
 			return err
 		}
@@ -300,6 +313,7 @@ func WriteTextToFile(filePath string, data string, append bool) error {
 
 //
 func WriteBytesToFile(filePath string, data []byte, append bool) error {
+
 	var f *os.File
 	var err error
 	if append == true {
@@ -312,7 +326,7 @@ func WriteBytesToFile(filePath string, data []byte, append bool) error {
 		}
 
 		// open files r and w
-		f, err = os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY,0600)
+		f, err = os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY, 0600)
 		if err != nil {
 			return err
 		}
@@ -331,7 +345,6 @@ func WriteBytesToFile(filePath string, data []byte, append bool) error {
 
 // Reads a file's contents
 func ReadFile(filePath string) ([]byte, error) {
+
 	return ioutil.ReadFile(filePath)
 }
-
-

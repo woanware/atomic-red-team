@@ -1,21 +1,23 @@
 package goutil
 
 import (
-	"os"
-	"path/filepath"
-	"github.com/mgutz/ansi"
 	"bytes"
 	"fmt"
+	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/mgutz/ansi"
 )
 
 //
 func RemoveIllegalPathCharacters(path string) string {
+
 	re, _ := regexp.Compile("[\\:*?\"<>|]")
 	var buffer bytes.Buffer
 	for _, c := range path {
-		if re.MatchString(string(c))  == false {
+		if re.MatchString(string(c)) == false {
 			buffer.WriteRune(c)
 		}
 	}
@@ -32,8 +34,8 @@ func RemoveIllegalPathCharacters(path string) string {
 
 	// Remove the last underscore as not necessary for the output file
 	if len(temp) > 0 {
-		if string(temp[len(temp) - 1:]) == "_" {
-			temp = temp[0:len(temp) - 1]
+		if string(temp[len(temp)-1:]) == "_" {
+			temp = temp[0 : len(temp)-1]
 		}
 	}
 
@@ -41,7 +43,8 @@ func RemoveIllegalPathCharacters(path string) string {
 }
 
 // Ensure that the user supplied path exists as a directory
-func DoesDirectoryExist(path string) (bool) {
+func DoesDirectoryExist(path string) bool {
+
 	file_info, err := os.Stat(path)
 	if err == nil {
 		if file_info.IsDir() == false {
@@ -54,12 +57,15 @@ func DoesDirectoryExist(path string) (bool) {
 		fmt.Println(ansi.Color(err.Error(), "red"))
 	}
 
-	if os.IsNotExist(err) { return false}
+	if os.IsNotExist(err) {
+		return false
+	}
 	return false
 }
 
 //
 func IsPathDirectory(path string) (bool, error) {
+
 	// Determine if the 'input' parameter is a file or directory
 	f, err := os.Open(path)
 	defer f.Close()
@@ -79,6 +85,7 @@ func IsPathDirectory(path string) (bool, error) {
 }
 
 func GetApplicationDirectory() string {
+
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		return ""
@@ -89,6 +96,7 @@ func GetApplicationDirectory() string {
 
 //
 func RemoveDriveLetter(data string) string {
+
 	match, _ := regexp.MatchString("^\\w:\\\\", data)
 	if match == true {
 		return data[3:]
@@ -99,6 +107,7 @@ func RemoveDriveLetter(data string) string {
 
 //
 func GetFileNameWithoutExtension(file string) string {
+
 	return strings.TrimSuffix(filepath.Base(file), filepath.Ext(filepath.Base(file)))
 }
 
@@ -107,7 +116,7 @@ func SplitPath(filePath string) (fileName string, fileDirectory string) {
 
 	lastIndex := strings.LastIndex(filePath, "\\")
 	if lastIndex > -1 {
-		fileName = filePath[lastIndex + 1:len(filePath)]
+		fileName = filePath[lastIndex+1 : len(filePath)]
 		fileDirectory = filePath[:lastIndex]
 	}
 

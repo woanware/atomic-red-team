@@ -2,6 +2,14 @@
 
 
 [[projects]]
+  digest = "1:870d441fe217b8e689d7949fef6e43efbc787e50f200cb1e70dbca9204a1d6be"
+  name = "github.com/inconshreveable/mousetrap"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
+  version = "v1.0"
+
+[[projects]]
   digest = "1:c658e84ad3916da105a761660dcaeb01e63416c8ec7bc62256a9b411a05fcd67"
   name = "github.com/mattn/go-colorable"
   packages = ["."]
@@ -26,20 +34,36 @@
   revision = "9520e82c474b0a04dd04f8a40959027271bab992"
 
 [[projects]]
-  branch = "master"
-  digest = "1:a6bd22606fdb292073c5d51bd53ad721a72d3c88e6da6a28a3da0bee2373738a"
-  name = "github.com/woanware/goutil"
+  digest = "1:645cabccbb4fa8aab25a956cbcbdf6a6845ca736b2c64e197ca7cbb9d210b939"
+  name = "github.com/spf13/cobra"
   packages = ["."]
   pruneopts = "UT"
-  revision = "13e6bb493c6b430edeee69a91f43ee62f7e414a5"
+  revision = "ef82de70bb3f60c65fb8eebacbb2d122ef517385"
+  version = "v0.0.3"
+
+[[projects]]
+  digest = "1:c1b1102241e7f645bc8e0c22ae352e8f0dc6484b6cb4d132fa9f24174e0119e2"
+  name = "github.com/spf13/pflag"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "298182f68c66c05229eb03ac171abe6e309ee79a"
+  version = "v1.0.3"
 
 [[projects]]
   branch = "master"
-  digest = "1:c2789211d4035eb0843b85958ecf7cb4a5ea91c2d4decee652c94ce898e433cb"
+  digest = "1:763635c10034dbc16ef799171671120f469dd016716c40c7e400136d2cb87b42"
+  name = "github.com/woanware/goutil"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "feab513521a70cf07a65956e060c4ed3f6b07370"
+
+[[projects]]
+  branch = "master"
+  digest = "1:0a40b0bdd57a93e741d8557465be3a2edeec408e9b6399586ad65bbe8e355796"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "UT"
-  revision = "4497e2df6f9e69048a54498c7affbbec3294ad47"
+  revision = "fa43e7bc11baaae89f3f902b2b4d832b68234844"
 
 [[projects]]
   digest = "1:342378ac4dcb378a5448dd723f0784ae519383532f5e70ade24132c4c8693202"
@@ -53,6 +77,7 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/spf13/cobra",
     "github.com/woanware/goutil",
     "gopkg.in/yaml.v2",
   ]

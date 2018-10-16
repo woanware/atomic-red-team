@@ -2,12 +2,13 @@ package goutil
 
 import (
 	"errors"
+	"fmt"
 	"io"
-	"strings"
-	"time"
-	"runtime/debug"
 	"os"
 	"path/filepath"
+	"runtime/debug"
+	"strings"
+	"time"
 )
 
 // ##### Types #########################################################################################################
@@ -25,6 +26,7 @@ type NopCloser struct {
 // ##### Public Methods ################################################################################################
 
 func ParseNameValue(data string) (string, string, error) {
+
 	name := ""
 	value := ""
 	remainder := ""
@@ -55,17 +57,17 @@ func ParseNameValue(data string) (string, string, error) {
 		// Name doesn't start with a quote so find the next space
 		index := strings.Index(data, " ")
 		// No space identified so the "name" part is the entire string, with a blank "value"
-		if (index == -1) {
+		if index == -1 {
 			name = data
 		} else {
 			name = data[0:index]
-			if data[index + 1:index + 2] == "\"" {
-				value, remainder, err = getQuotedString(data[index + 2:])
+			if data[index+1:index+2] == "\"" {
+				value, remainder, err = getQuotedString(data[index+2:])
 				if err != nil {
 					return "", "", err
 				}
 			} else {
-				value = data[index + 1:]
+				value = data[index+1:]
 			}
 		}
 	}
@@ -73,7 +75,8 @@ func ParseNameValue(data string) (string, string, error) {
 	return name, value, nil
 }
 
-func GetStringSlicePosition(data []string, term string) (int) {
+func GetStringSlicePosition(data []string, term string) int {
+
 	for i, v := range data {
 		if v == term {
 			return i
@@ -85,6 +88,7 @@ func GetStringSlicePosition(data []string, term string) (int) {
 
 // Generic method to check if string exists in a string slice
 func DoesByteSliceContain(data []byte, lookup byte) bool {
+
 	for _, item := range data {
 		if item == lookup {
 			return true
@@ -95,7 +99,9 @@ func DoesByteSliceContain(data []byte, lookup byte) bool {
 
 // Generic method to check if string exists in a string slice
 func DoesStringSliceContain(data []string, lookup string) bool {
+
 	for _, item := range data {
+
 		if item == lookup {
 			return true
 		}
@@ -107,6 +113,7 @@ func (NopCloser) Close() (err error) { return nil }
 
 // Starts another thread to perform OS memory freeing
 func FreeMemory(durationMinutes int) {
+
 	go func() {
 		for {
 			debug.FreeOSMemory()
@@ -117,7 +124,8 @@ func FreeMemory(durationMinutes int) {
 }
 
 // Returns the current working directory
-func GetCwd() (string, error){
+func GetCwd() (string, error) {
+
 	cwdDir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		return "", err
@@ -126,13 +134,48 @@ func GetCwd() (string, error){
 	return cwdDir, nil
 }
 
+// Provides a Yes/No prompt. Return true for "YES", false for "NO"
+func GetYesNoPrompt(defaultYes bool) (bool, error) {
+
+	var s string
+
+	if defaultYes == true {
+		fmt.Printf("\n[Y] Yes  [N] No  (default is \"Y\"): ")
+	} else {
+		fmt.Printf("\n[Y] Yes  [N] No  (default is \"N\"): ")
+	}
+
+	_, err := fmt.Scanln(&s)
+	if err != nil {
+		return false, nil
+	}
+
+	s = strings.TrimSpace(s)
+	s = strings.ToLower(s)
+
+	if defaultYes == true {
+		if s == "n" || s == "no" {
+			return false, nil
+		}
+
+		return true, nil
+	}
+
+	if s == "y" || s == "yes" {
+		return true, nil
+	}
+
+	return false, nil
+}
+
 // ##### Internal Methods ##############################################################################################
 
 func getQuotedString(data string) (string, string, error) {
+
 	index := strings.Index(data[1:], "\"")
-	if (index == -1) {
+	if index == -1 {
 		return "", "", errors.New("Invalid name value pair, no second quote")
 	}
 
-	return data[0:index + 1], data[index + 2:], nil
+	return data[0 : index+1], data[index+2:], nil
 }

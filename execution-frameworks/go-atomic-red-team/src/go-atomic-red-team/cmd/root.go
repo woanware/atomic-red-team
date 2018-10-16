@@ -7,12 +7,22 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// ##### Constants ###########################################################
+
+const APP_TITLE string = "go-atomic-red-team"
+const APP_NAME string = "gart"
+const APP_VERSION string = "v0.0.1"
+
+// ##### Variables ###########################################################
+
 var cmdRoot = &cobra.Command{
 	Use:   "gart",
-	Short: "gart is an atomic read team execution engine",
-	Long:  `blah`,
+	Short: "gart is an atomic red team execution engine",
+	Long:  `gart executes atomic yaml files`,
 	Run:   root,
 }
+
+// ##### Functions ###########################################################
 
 // Root/base/default command e.g. just display the app info
 func Execute() {
